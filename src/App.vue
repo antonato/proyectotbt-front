@@ -37,22 +37,17 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-            <TaskView/>
-            <TaskList/>
+      <router-view to="/taskList"></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import TaskList from './components/Tasklist.vue';
-import TaskView from './components/TaskView.vue';
 
 export default {
   name: 'App',
 
   components: {
-    TaskList,
-    TaskView,
   },
 
   data: () => ({
