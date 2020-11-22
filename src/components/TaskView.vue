@@ -27,8 +27,12 @@
       >
         
 
-        <div class="grey--text ml-4">
+        <div class="px-4 grey--text ml-4">
           Status : {{task.invisible}}
+        </div>
+
+        <div class="px-4 grey--text ml-4">
+          Emergencia asociada : {{emergency.nombre}}
         </div>
       </v-row>
 
@@ -87,6 +91,7 @@ export default {
 
   data: ()=>({
     task:null,
+    emergency:null
   }),
 
   mounted(){
@@ -98,11 +103,15 @@ export default {
     axios.get('http://localhost:8081/tarea/getById/'+this.$route.params.idTask)
       .then( response => {
         this.task = response.data
+        axios.get('http://localhost:8081/emergencias/getById/'+this.task.id_emergencia)
+        .then(response=>{
+          this.emergency = response.data
+        })
+        .chatch(e=>console.log(e))
       })
       .catch( e=> console.log(e))
-    }
-  },
-
+    },
+  }
 }
 </script>
 
