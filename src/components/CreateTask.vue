@@ -18,7 +18,7 @@
         required
       ></v-text-field>  
 
-      <v-text-field v-model="task.cant_vol_requeridos" type="number" label="Voluntarios Requeridos"></v-text-field>
+      <v-text-field v-model="task.cant_vol_requeridos" :rules="membersRules" type="number" label="Voluntarios Requeridos" required></v-text-field>
 
       <v-text-field
         v-model="task.descripcion"
@@ -35,10 +35,10 @@
               v-model = "task.id_emergencia"
               :items="emergencies.items"
               :reduce="emergency => emergency.id"
+              :rules="[v => !!v || 'Emergencia requerida']"
               label="Selecciona Emergencia"
-              hide-details
-              prepend-icon="mdi-map"
-              single-line
+              prepend-icon="mdi-access-point" 
+              required
             ></v-select>
           </v-col>
         </v-row>
@@ -61,19 +61,20 @@
           >
             <v-text-field
               v-model="dateRangeText"
-              label="Date range"
+              label="Rango de tiempo"
               prepend-icon="mdi-calendar"
               readonly
+              :rules="dateRangeRules"
+              required
             ></v-text-field>
           </v-col>
         </v-row>
       </v-container>
 
       <v-btn
-        :disabled="!valid"
         color="success"
         class="mr-4"
-        @click="send"
+        @click="validate"
       >
         Crear
       </v-btn>
@@ -115,6 +116,16 @@ export default {
             v => !!v || 'Descripción es requerida',
             v => (v && v.length >= 3) || 'La descripción no puede tener menos de 3 caracteres',
           ],
+          emergencyRules: [
+            v => !!v || 'Emergencia requerida',
+          ],
+          membersRules: [
+            v => !!v || 'Cantidad de Integrantes requerida',
+            v => (v && v.length >= 0) || 'Debes pon er integrantes',
+          ],
+          dateRangeRules: [
+            v => !!v || 'Rango de Fecha requerida',
+          ],
           valid: true,
           dates: ['2020-11-20', '2020-12-20'],
           task: {
@@ -138,14 +149,14 @@ export default {
     },
     methods: {
       validate () {
-        this.$refs.form.validate()
+        const validForm = this.$refs.form.validate()
+        if(validForm){
+          console.log(this.valid);
+          this.send();
+        }
       },
       reset () {
         this.$refs.form.reset()
-      },
-      selectId(e){
-        console.log(e.id);
-        this.task.id_emergencia = e.id
       },
       async getEmergencies(){
         let response = await axios.get('http://localhost:8081/emergencias/getAll')
@@ -153,10 +164,10 @@ export default {
         this.defineEmergencies(this.emergencies.data);
       },
       defineEmergencies(data){
-          console.log(data);
+          this.emergencies.items.push({value: 0, text: 'Selecciona una emergencia'});
           data.forEach(emergency => {
             let emergencyData = {
-              value: emergency.id,
+              value: emergency.id+1,
               text: emergency.nombre
             }
             this.emergencies.items.push(emergencyData);
@@ -170,7 +181,7 @@ export default {
             }
             let json = {
               "id": this.task.id,
-              "id_emergencia": this.task.id_emergencia,
+              "id_emergencia": this.task.id_emergencia-1,
               "id_estado": this.task.id_estado,
               "nombre": this.task.nombre,
               "finicio": this.task.finicio,
@@ -180,7 +191,6 @@ export default {
               "invisible": this.task.invisible,
               "descripcion": this.task.descripcion
             }
-            console.log(json);
             await axios.post('http://localhost:8081/tarea/create', json)
             .then( data=> {
                 console.log(data);
