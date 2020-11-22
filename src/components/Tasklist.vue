@@ -1,95 +1,160 @@
 <template>
   <v-container fluid>
-    <v-data-iterator
-      :tasks="tasks"
-      :tasks-per-page.sync="tasksPerPage"
-      hide-default-footer
+    <v-data-table
+      :headers="headers"
+      :items="tasks"
+      :items-per-page="5"
+      :loading="loading"
+      loading-text="Estamos cargando las tareas"
+      class="elevation-1"
     >
-      <template v-slot:header>
+      <template v-slot:item.nombre="{item}">
+        <a href=""><router-link :to="'../taskView/'+ item.id">{{item.nombre}}</router-link></a>
+      </template>
+      <template v-slot:top>
         <v-toolbar
-          class="mb-2"
-          color="indigo darken-5"
-          dark
           flat
         >
-          <v-toolbar-title>This is a header</v-toolbar-title>
-        </v-toolbar>
-      </template>
-
-      <template>
-        <v-row>
-          <v-col
-            v-for="task in tasks"
-            :key="task.nombre"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
+          <v-toolbar-title>Lista de Tareas</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+          <v-spacer></v-spacer>
+          <v-dialog
+            v-model="dialog"
+            max-width="500px"
           >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Nueva Tarea
+              </v-btn>
+            </template>
             <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                {{ task.nombre }}
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
               </v-card-title>
 
-              <v-divider></v-divider>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editeTask.name"
+                        label="Dessert name"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editeTask.calories"
+                        label="Calories"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editeTask.fat"
+                        label="Fat (g)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editeTask.carbs"
+                        label="Carbs (g)"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editeTask.protein"
+                        label="Protein (g)"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-              <v-list dense>
-
-                <v-list-task>
-                  <v-list-task-content>Fecha de Inicio:</v-list-task-content>
-                  <v-list-task-content class="align-end">
-                    {{ task.finicio }}
-                  </v-list-task-content>
-                </v-list-task>
-
-                <v-list-task>
-                  <v-list-task-content>Fecha de Termino:</v-list-task-content>
-                  <v-list-task-content class="align-end">
-                    {{ task.ffin }}
-                  </v-list-task-content>
-                </v-list-task>
-
-                <v-list-task>
-                  <v-list-task-content>Cantidad Inscritos:</v-list-task-content>
-                  <v-list-task-content class="align-end">
-                    {{ task.cant_vol_inscritos }}
-                  </v-list-task-content>
-                </v-list-task>
-
-                <v-list-task>
-                  <v-list-task-content>Cantidad Requeridos:</v-list-task-content>
-                  <v-list-task-content class="align-end">
-                    {{ task.cant_vol_requeridos }}
-                  </v-list-task-content>
-                </v-list-task>
-
-                <v-list-task>
-                  <v-list-task-content>Descripcion:</v-list-task-content>
-                  <v-list-task-content class="align-end">
-                    {{ task.descripcion }}
-                  </v-list-task-content>
-                </v-list-task>
-
-             
-              </v-list>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="close"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="save"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
             </v-card>
-          </v-col>
-        </v-row>
-      </template>
-
-      <template v-slot:footer>
-        <v-toolbar
-          class="mt-2"
-          color="indigo"
-          dark
-          flat
-        >
-          <v-toolbar-title class="subheading">
-            This is a footer
-          </v-toolbar-title>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">Estás seguro que quieres eliminar esta tarea?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm">Sí</v-btn>
+                <v-btn color="blue darken-1" text @click="closeDelete">No, cancela</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
       </template>
-    </v-data-iterator>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+      <template v-slot:no-data>
+        <v-btn
+          color="primary"
+          @click="initialize"
+        >
+          Reset
+        </v-btn>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
@@ -102,11 +167,64 @@ export default {
   },
   
   data: ()=>({
-    tasks: null,
+      dialog: false,
+      dialogDelete: false,
+      loading: true,
+      headers: [
+        { text: 'ID', value: 'id' },
+        {
+          text: 'Nombre Tarea',
+          align: 'start',
+          sortable: false,
+          value: 'nombre',
+        },
+        { text: 'Emergencia', value: 'id_emergencia' },
+        { text: 'Estado', value: 'id_estado' },
+        { text: 'Fecha Inicio', value: 'finicio' },
+        { text: 'Fecha de Término', value: 'ffin' },
+        { text: 'Cantidad de Inscritos', value: 'cant_vol_inscritos' },
+        { text: 'Cantidad de Requeridos', value: 'cant_vol_requeridos' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      editedIndex: -1,
+      editeTask: {
+        nombre: '',
+        id_estado: 0,
+        id_emergencia: 0,
+        finicio: '',
+        fin: '',
+        cant_vol_inscritos: 0,
+        cant_vol_requeridos: 0,
+      },
+      defaultTask: {
+        nombre: '',
+        id_estado: 0,
+        id_emergencia: 0,
+        finicio: '',
+        fin: '',
+        cant_vol_inscritos: 0,
+        cant_vol_requeridos: 0,
+      },
+    tasks: [],
     tasksPerPage: 5,
   }),
 
-  async mounted(){
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'Nueva Tarea' : 'Editar Tarea'
+    },
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
+
+  created(){
     this.getTasks();
   },
 
@@ -118,7 +236,49 @@ export default {
         console.log(this.tasks);
       })
       .catch( e=> console.log(e))
-    }
+      this.loading = false;
+      },
+      editItem (item) {
+        this.editedIndex = this.tasks.indexOf(item)
+        this.editeTask = Object.assign({}, item)
+        this.dialog = true
+      },
+
+      deleteItem (item) {
+        this.editedIndex = this.tasks.indexOf(item)
+        this.editeTask = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+
+      deleteItemConfirm () {
+        this.tasks.splice(this.editedIndex, 1)
+        this.closeDelete()
+      },
+
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editeTask = Object.assign({}, this.defaultTask)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editeTask = Object.assign({}, this.defaultTask)
+          this.editedIndex = -1
+        })
+      },
+
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.tasks[this.editedIndex], this.editeTask)
+        } else {
+          this.tasks.push(this.editeTask)
+        }
+        this.close()
+      },
   },
   
 
