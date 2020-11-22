@@ -100,8 +100,6 @@ export default {
           sortable: false,
           value: 'nombre',
         },
-        { text: 'Emergencia', value: 'id_emergencia' },
-        { text: 'Estado', value: 'id_estado' },
         { text: 'Fecha Inicio', value: 'finicio' },
         { text: 'Fecha de Término', value: 'ffin' },
         { text: 'Cantidad de Inscritos', value: 'cant_vol_inscritos' },
@@ -111,8 +109,6 @@ export default {
       editedIndex: -1,
       editeTask: {
         nombre: '',
-        id_estado: 0,
-        id_emergencia: 0,
         finicio: '',
         fin: '',
         cant_vol_inscritos: 0,
@@ -120,8 +116,6 @@ export default {
       },
       defaultTask: {
         nombre: '',
-        id_estado: 0,
-        id_emergencia: 0,
         finicio: '',
         fin: '',
         cant_vol_inscritos: 0,
@@ -155,7 +149,7 @@ export default {
     await axios.get('http://localhost:8081/tarea/getAll')
       .then( response => {
         this.tasks = response.data
-        console.log(this.tasks);
+        console.log(this.tasks.nombre);
       })
       .catch( e=> console.log(e))
       this.loading = false;
