@@ -1,18 +1,78 @@
 <template>
   <v-container>
+  <v-card
+    :loading="loading"
+    class="mx-auto my-12"
+    max-width="374"
+  >
+    <template slot="progress">
+      <v-progress-linear
+        color="deep-purple"
+        height="10"
+        indeterminate
+      ></v-progress-linear>
+    </template>
 
-    <v-layout justify-center>
-      <v-flex xs6>
-        <h2>Tarea {{$route.params.idTask}}</h2>
-          </v-flex>
-    </v-layout>
+    <v-img
+      height="250"
+      src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+    ></v-img>
 
-    <v-layout justify-center>
-       <td><v-flex class="mr-5 mt-3">{{ task.nombre }}</v-flex></td>
-       <td><v-flex class="mr-5 mt-3">{{ task.finicio }}</v-flex></td>
-       <td><v-flex class="mr-5 mt-3">{{ task.ffin }}</v-flex></td>
-       <td><v-flex class="mr-5 mt-3">{{ task.descripcion }}</v-flex></td>
-    </v-layout>
+    <v-card-title>Tarea: {{task.nombre}}</v-card-title>
+
+    <v-card-text>
+      <v-row
+        align="center"
+        class="mx-0"
+      >
+        
+
+        <div class="grey--text ml-4">
+          Status : {{task.invisible}}
+        </div>
+      </v-row>
+
+      <div class="my-4 subtitle-1">
+        Voluntarios Inscritos • {{ task.cant_vol_inscritos }}
+      </div>
+      <div class="my-4 subtitle-1">
+        Voluntarios Requeridos • {{ task.cant_vol_requeridos }}
+      </div>
+
+      <div>{{ task.descripcion }}</div>
+    </v-card-text>
+
+    <v-divider class="mx-4"></v-divider>
+
+    <v-card-title>Duración</v-card-title>
+
+    <v-card-text>
+      <v-chip-group
+        v-model="selection"
+        active-class="deep-purple accent-4 white--text"
+        column
+      >
+        <v-chip>Inicio:{{ task.finicio }}</v-chip>
+
+        <v-chip>Termino: {{ task.ffin }}</v-chip>
+      </v-chip-group>
+    </v-card-text>
+
+    <v-card-actions>
+      <router-link to="../taskList">
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Volver a Tareas
+                </v-btn>
+              </router-link>
+    </v-card-actions>
+  </v-card>
+
   </v-container>
 </template>
 
