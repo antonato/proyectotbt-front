@@ -187,7 +187,7 @@ export default {
                 console.log(data);
               })
             .catch( e=> console.log(e))
-            this.$route.push({path:'/taskList'});
+            this.$router.push({path:'/taskList'});
       }
     },
     computed: {
