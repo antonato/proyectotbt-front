@@ -3,7 +3,7 @@
 
     <v-layout justify-center>
       <v-flex xs6>
-        <h2>Tarea + {{$router.params.idTask}} </h2>
+        <h2>Tarea {{$route.params.idTask}}</h2>
           </v-flex>
     </v-layout>
 
@@ -26,7 +26,7 @@ export default {
   },
 
   data: ()=>({
-    task:null
+    task:null,
   }),
 
   mounted(){
@@ -35,7 +35,7 @@ export default {
 
   methods: {
     getTask(){
-    axios.get('http://localhost:8081/tarea/getById/11'+this.id)
+    axios.get('http://localhost:8081/tarea/getById/'+this.$route.params.idTask)
       .then( response => {
         this.task = response.data
       })
