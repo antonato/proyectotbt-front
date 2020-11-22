@@ -31,11 +31,6 @@
       <v-container fluid>
         <v-row align="center">
           <v-col cols="6">
-            <v-subheader>
-              Prepended icon
-            </v-subheader>
-          </v-col>
-          <v-col cols="6">
             <v-select
               v-model = "task.id_emergencia"
               :items="emergencies.items"
@@ -169,7 +164,7 @@ export default {
           });
           console.log(this.emergencies);
       },
-      send(){
+      async send(){
         this.task.finicio = this.dates[0];
             if(this.dates[1] !=null){
               this.task.ffin = this.dates[1];
@@ -187,12 +182,12 @@ export default {
               "descripcion": this.task.descripcion
             }
             console.log(json);
-            axios.post('http://localhost:8081/tarea/create', json)
+            await axios.post('http://localhost:8081/tarea/create', json)
             .then( data=> {
                 console.log(data);
-                this.$route.push('../taskList');
               })
             .catch( e=> console.log(e))
+            this.$route.push({path:'/taskList'});
       }
     },
     computed: {

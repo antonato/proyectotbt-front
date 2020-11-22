@@ -3,13 +3,10 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import VueAxios from 'vue-axios';
 import Axios from 'axios';
-import router from './router'
-import VueRouter from 'vue-router';
-
+import router from './router/';
 
 Vue.config.productionTip = false
 Vue.use(vuetify);
-Vue.use(VueRouter);
 Vue.use(VueAxios, Axios);
 
 new Vue({
