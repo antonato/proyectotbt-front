@@ -28,22 +28,6 @@
         required
       ></v-text-field>
 
-      <v-container fluid>
-        <v-row align="center">
-          <v-col cols="6">
-            <v-select
-              v-model = "task.id_emergencia"
-              :items="emergencies.items"
-              :reduce="emergency => emergency.id"
-              label="Selecciona Emergencia"
-              hide-details
-              prepend-icon="mdi-map"
-              single-line
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-container>
-
       <v-container>
         <v-row>
           <v-col
@@ -84,7 +68,7 @@
         class="mr-4"
         @click="reset"
       >
-        LIMPIAR
+        Reset Form
       </v-btn>
     </v-form>
   </v-container>
@@ -101,11 +85,6 @@ export default {
   },
   data: function(){
       return{
-          emergencies: {
-            name: "Emergencias",
-            data: null,
-            items: [],
-          },
           error: false,
           error_msg: "",
           nameRules: [
@@ -121,7 +100,7 @@ export default {
           task: {
               id: null,
               id_emergencia: null,
-              id_estado: 1,
+              id_estado: null,
               nombre: "",
               finicio: null,
               ffin: null,
@@ -132,11 +111,6 @@ export default {
           }
       }
     },
-    created(){
-      this.getEmergencies();
-    },
-    mounted(){
-    },
     methods: {
       validate () {
         this.$refs.form.validate()
@@ -144,31 +118,13 @@ export default {
       reset () {
         this.$refs.form.reset()
       },
-      selectId(e){
-        console.log(e.id);
-        this.task.id_emergencia = e.id
-      },
-      async getEmergencies(){
-        let response = await axios.get('http://localhost:8081/emergencias/getAll')
-        this.emergencies.data = response.data
-        this.defineEmergencies(this.emergencies.data);
-      },
-      defineEmergencies(data){
-          console.log(data);
-          data.forEach(emergency => {
-            let emergencyData = {
-              value: emergency.id,
-              text: emergency.nombre
-            }
-            this.emergencies.items.push(emergencyData);
-          });
-          console.log(this.emergencies);
-      },
-      async send(){
-        this.task.finicio = this.dates[0];
+      send(){
+        console.log(this.dates[0]);
+            this.task.finicio = this.dates[0];
             if(this.dates[1] !=null){
               this.task.ffin = this.dates[1];
             }
+            console.log(this.task);
             let json = {
               "id": this.task.id,
               "id_emergencia": this.task.id_emergencia,
@@ -181,8 +137,7 @@ export default {
               "invisible": this.task.invisible,
               "descripcion": this.task.descripcion
             }
-            console.log(json);
-            await axios.post('http://localhost:8081/tarea/create', json)
+            axios.post('http://localhost:8081/tarea/create', json)
             .then( data=> {
                 console.log(data);
               })
