@@ -2,7 +2,7 @@
   <v-container>
     <v-layout justify-center>
         <v-flex xs6>
-          <h2>Agregar Tarea</h2>
+          <h2>Agregar Emergencia</h2>
             </v-flex>
     </v-layout>
     <v-form
@@ -11,17 +11,15 @@
       lazy-validation
     >
       <v-text-field
-        v-model="task.nombre"
+        v-model="emergency.nombre"
         :counter="30"
         :rules="nameRules"
-        label="Nombre Tarea"
+        label="Nombre Emergencia"
         required
       ></v-text-field>  
 
-      <v-text-field v-model="task.cant_vol_requeridos" :rules="membersRules" type="number" label="Voluntarios Requeridos" required></v-text-field>
-
       <v-text-field
-        v-model="task.descripcion"
+        v-model="emergency.descripcion"
         :counter="30"
         :rules="descriptionRules"
         label="Descripción"
@@ -32,11 +30,11 @@
         <v-row align="center">
           <v-col cols="6">
             <v-select
-              v-model = "task.id_emergencia"
-              :items="emergencies.items"
-              :reduce="emergency => emergency.id"
-              :rules="[v => !!v || 'Emergencia requerida']"
-              label="Selecciona Emergencia"
+              v-model = "emergency.id_institucion"
+              :items="institutions.items"
+              :reduce="institution => institution.id"
+              :rules="[v => !!v || 'Institución requerida']"
+              label="Selecciona Institución"
               prepend-icon="mdi-access-point" 
               required
             ></v-select>
@@ -70,10 +68,10 @@
           </v-col>
         </v-row>
       </v-container>
-
-      <div style="height: 500px; width: 50%">
+      
+    <div style="height: 500px; width: 50%">
         <div style="height: 200px overflow: auto;">
-        <p>El punto de la tarea será {{ position.lat }}, {{ position.lng }}</p>
+        <p>El punto de la emergencia será {{ position.lat }}, {{ position.lng }}</p>
         </div>
         <l-map
         v-if="showMap"
@@ -101,7 +99,7 @@
             :icon="icon" 
          ></l-marker>
         </l-map>
-      </div>
+    </div>
 
       <v-btn
         color="success"
@@ -119,8 +117,6 @@
         LIMPIAR
       </v-btn>
     </v-form>
-
-    
   </v-container>
 </template>
 
@@ -131,22 +127,21 @@ import L from 'leaflet';
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LPopup, LIconDefault, LGeoJson  } from "vue2-leaflet";
 
-
 export default {
-  name: 'CreateTask',
+  name: 'Createemergency',
   props: {
     msg: String
   },
   data: function(){
-    return{
-          components: {
-                  LMap,
-                  LTileLayer,
-                  LMarker,
-                  LPopup,
-                  LIconDefault,
-                  LGeoJson
-                  },
+      return{
+        components: {
+                LMap,
+                LTileLayer,
+                LMarker,
+                LPopup,
+                LIconDefault,
+                LGeoJson
+                },
           zoom: 8,
           center: latLng(-38.719, -72.478),
           url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -169,8 +164,8 @@ export default {
           iconSize: [32, 37],
           iconAnchor: [16, 37]
           }),
-          emergencies: {
-            name: "Emergencias",
+          institutions: {
+            name: "Instituciones",
             data: null,
             items: [],
           },
@@ -184,8 +179,8 @@ export default {
             v => !!v || 'Descripción es requerida',
             v => (v && v.length >= 3) || 'La descripción no puede tener menos de 3 caracteres',
           ],
-          emergencyRules: [
-            v => !!v || 'Emergencia requerida',
+          institutionRules: [
+            v => !!v || 'Institución requerida',
           ],
           membersRules: [
             v => !!v || 'Cantidad de Integrantes requerida',
@@ -196,22 +191,20 @@ export default {
           ],
           valid: true,
           dates: ['2020-11-20', '2020-12-20'],
-          task: {
+          emergency: {
               id: null,
-              id_emergencia: null,
+              id_institucion: null,
               id_estado: 1,
               nombre: "",
               finicio: null,
               ffin: null,
-              cant_vol_inscritos: 0,
-              cant_vol_requeridos: null,
               invisible: 0,
               descripcion: ""
-          }
+          },
       }
     },
     created(){
-      this.getEmergencies();
+      this.getinstitutions();
     },
     methods: {
       validate () {
@@ -224,43 +217,41 @@ export default {
       reset () {
         this.$refs.form.reset()
       },
-      async getEmergencies(){
-        let response = await axios.get('http://localhost:8081/emergencies/getAll')
-        console.log(response);
-        this.emergencies.data = response.data
-        this.defineEmergencies(this.emergencies.data);
+      async getinstitutions(){
+        let response = await axios.get('http://localhost:8081/institution/getAll')
+        this.institutions.data = response.data
+        this.defineinstitutions(this.institutions.data);
       },
-      defineEmergencies(data){
-          this.emergencies.items.push({value: 0, text: 'Selecciona una emergencia'});
-          data.forEach(emergency => {
-            let emergencyData = {
-              value: emergency.id+1,
-              text: emergency.nombre
+      defineinstitutions(data){
+          this.institutions.items.push({value: 0, text: 'Selecciona una institución'});
+          data.forEach(institution => {
+            let institutionData = {
+              value: institution.id+1,
+              text: institution.nombre
             }
-            this.emergencies.items.push(emergencyData);
+            this.institutions.items.push(institutionData);
           });
-          console.log(this.emergencies);
+          console.log(this.institutions);
       },
       async send(){
-        this.task.finicio = this.dates[0];
+        this.emergency.finicio = this.dates[0];
             if(this.dates[1] !=null){
-              this.task.ffin = this.dates[1];
+              this.emergency.ffin = this.dates[1];
             }
             let json = {
-              "id": this.task.id,
-              "id_emergencia": this.task.id_emergencia-1,
-              "id_estado": this.task.id_estado,
-              "nombre": this.task.nombre,
-              "finicio": this.task.finicio,
-              "ffin": this.task.ffin,
-              "cant_vol_inscritos": this.task.cant_vol_inscritos,
-              "cant_vol_requeridos": this.task.cant_vol_requeridos,
-              "invisible": this.task.invisible,
-              "descripcion": this.task.descripcion,
+              "id": this.emergency.id,
+              "id_institucion": this.emergency.id_institucion-1,
+              "id_estado": this.emergency.id_estado,
+              "nombre": this.emergency.nombre,
+              "finicio": this.emergency.finicio,
+              "ffin": this.emergency.ffin,
+              "invisible": this.emergency.invisible,
+              "descripcion": this.emergency.descripcion,
               "longitude": this.position.lng,
               "latitude": this.position.lat,
             }
-            await axios.post('http://localhost:8081/task/create', json)
+            console.log(json);
+            await axios.post('http://localhost:8081/emergencies/createEmergency', json)
             .then( data=> {
                 console.log(data);
               })
@@ -306,7 +297,6 @@ export default {
                 };
             };
       },
-
       dateRangeText () {
         return this.dates.join(' ~ ')
       },

@@ -146,7 +146,7 @@ export default {
 
   methods: {
     async getTasks(){
-    await axios.get('http://localhost:8081/tarea/getAll')
+    await axios.get('http://localhost:8081/task/getAll')
       .then( response => {
         this.tasks = response.data
         console.log(this.tasks.nombre);
