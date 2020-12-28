@@ -224,12 +224,6 @@ export default {
       reset () {
         this.$refs.form.reset()
       },
-      async getEmergencies(){
-        let response = await axios.get('http://localhost:8081/emergencies/getAll')
-        console.log(response);
-        this.emergencies.data = response.data
-        this.defineEmergencies(this.emergencies.data);
-      },
       defineEmergencies(data){
           this.emergencies.items.push({value: 0, text: 'Selecciona una emergencia'});
           data.forEach(emergency => {
@@ -240,6 +234,12 @@ export default {
             this.emergencies.items.push(emergencyData);
           });
           console.log(this.emergencies);
+      },
+      async getEmergencies(){
+        let response = await axios.get('http://localhost:8081/emergencies/getAll')
+        console.log(response);
+        this.emergencies.data = response.data
+        this.defineEmergencies(this.emergencies.data);
       },
       async send(){
         this.task.finicio = this.dates[0];

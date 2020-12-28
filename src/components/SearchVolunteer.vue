@@ -115,6 +115,17 @@ export default {
             this.send();
             }
         },
+        defineEmergencies(data){
+          this.emergencies.items.push({value: 0, text: 'Selecciona una emergencia'});
+          data.forEach(emergency => {
+            let emergencyData = {
+              value: emergency.id+1,
+              text: emergency.nombre
+            }
+            this.emergencies.items.push(emergencyData);
+          });
+          console.log(this.emergencies);
+        },
         async getEmergencies(){
             let response = await axios.get('http://localhost:8081/emergencies/getAll')
             this.emergencies.data = response.data
@@ -125,7 +136,7 @@ export default {
                 "id_emergency": this.id_emergency,
                 "radius": this.radius
             }
-            await axios.post('http://localhost:8081/getVolunteerByRadius/'+ this.id_emergency, json)
+            await axios.get('http://localhost:8081/getVolunteerByRadius/'+ this.id_emergency + '?radius=' + this.radius, json)
             .then( data=> {
                 console.log(data);
               })
