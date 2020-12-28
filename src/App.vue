@@ -6,14 +6,17 @@
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="../src/assets/placeholder.svg"
-          transition="scale-transition"
-          width="40"
-        />
+        <v-btn icon color="blue" @click="goHome">
+          <v-icon medium>mdi-home</v-icon>
+          <!--<v-img
+            alt="Vuetify Logo"
+            class="shrink mr-2"
+            contain
+            src="../src/assets/logo.png"
+            transition="scale-transition"
+            width="40"
+          />-->
+        </v-btn>
         <h3 style="margin-bottom: 0;">Sistema de Emergencias</h3>
       </div>    
 
@@ -34,6 +37,11 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    goHome() {
+      window.location.href = '/';
+    }
+  }
 };
-</script>
 
+</script>

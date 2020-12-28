@@ -256,7 +256,7 @@ export default {
               "cant_vol_inscritos": this.task.cant_vol_inscritos,
               "cant_vol_requeridos": this.task.cant_vol_requeridos,
               "invisible": this.task.invisible,
-              "descripcion": this.task.descripcion,
+              "descrip": this.task.descripcion,
               "longitude": this.position.lng,
               "latitude": this.position.lat,
             }
