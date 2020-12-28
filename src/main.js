@@ -5,7 +5,7 @@ import VueAxios from 'vue-axios';
 import Axios from 'axios';
 import routes from './router/';
 import VueRouter from 'vue-router'
-import { LMap, LTileLayer, LMarker, LTooltip, LGeoJson } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LTooltip, LGeoJson, LCircle } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon }  from 'leaflet';
 
@@ -18,6 +18,7 @@ Vue.component('l-tooltip', LTooltip);
 Vue.component('l-tile-layer', LTileLayer);
 Vue.component('l-marker', LMarker);
 Vue.component('l-geo-json', LGeoJson);
+Vue.component('l-circle', LCircle);
 
 // this part resolve an issue where the markers would not appear
 delete Icon.Default.prototype._getIconUrl;
