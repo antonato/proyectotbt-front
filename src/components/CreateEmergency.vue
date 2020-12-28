@@ -246,7 +246,7 @@ export default {
               "finicio": this.emergency.finicio,
               "ffin": this.emergency.ffin,
               "invisible": this.emergency.invisible,
-              "descripcion": this.emergency.descripcion,
+              "descrip": this.emergency.descripcion,
               "longitude": this.position.lng,
               "latitude": this.position.lat,
             }
