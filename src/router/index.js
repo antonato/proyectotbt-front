@@ -8,6 +8,8 @@ import Login from '@/components/Login.vue';
 import registroAdmin from '@/components/registroAdmin.vue'
 import AdminView from '@/components/AdminView.vue'
 import VolunteerView from '@/components/VolunteerView.vue'
+import EditVolunteer from '@/components/EditVolunteer.vue'
+
 
 export const routes = [
     { path: '/taskView/:idTask', component: TaskView },
@@ -19,7 +21,8 @@ export const routes = [
     { path: '/login', component: Login },
     { path: '/registroAdmin', component: registroAdmin },
     { path: '/adminView', component: AdminView },
-    { path: '/volunteerView', component: VolunteerView }
+    { path: '/volunteerView', component: VolunteerView },
+    { path: '/editVolunteer', component: EditVolunteer}
 
 ];
 

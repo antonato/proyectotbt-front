@@ -177,6 +177,7 @@ export default {
     //para mapa
     dialog: true,
     idRol: null,
+    idUser: -1,
     tab: 0,
     tabs: [
         {name:"Login", icon:"mdi-account"},
@@ -244,7 +245,7 @@ export default {
           this.logged = true;
           localStorage.setItem('logged', this.logged);
           localStorage.setItem('idRol',this.idRol);
-          
+          localStorage.setItem('idUser',this.idUser);
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = false; 

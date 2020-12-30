@@ -20,6 +20,7 @@
             </div >
             <v-spacer></v-spacer>
             <div>
+                <!-- Colocar if para saber el Rol del usuario para que no se muestre a un voluntario-->
                 <v-btn text to="/registroAdmin">
                   <v-icon left>mdi-pencil</v-icon>
                     Registrar Admin
@@ -47,7 +48,8 @@ export default {
   },
   data: () => ({
     logged: localStorage.getItem('logged'),
-    idRol: localStorage.getItem('idRol')
+    idRol: localStorage.getItem('idRol'),
+    idUser: localStorage.getItem('idUser')
   }),
   methods: {
     goHome() {
@@ -57,8 +59,10 @@ export default {
     logOut(){
       this.logged = false;
       localStorage.removeItem('logged');
-      this.idRol = 0
+      this.idRol = 0;
       localStorage.removeItem('idRol');
+      this.idUser = -1;
+      localStorage.removeItem('idUser');
       window.location.href = "/";
     }
   }

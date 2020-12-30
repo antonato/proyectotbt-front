@@ -9,9 +9,14 @@
                     </v-container>
                 </v-col>
                 <v-col class="d-flex flex-column flex-nowrap" md="4">
-                    <!--<v-btn color="error" @click="LogOut" class="mr-4 mb-2">
+                    <router-link to="/editVolunteer">
+                    <v-btn color="success" class="mr-4 mb-2">
+                            Editar Información
+                    </v-btn>
+                    </router-link>
+                    <v-btn color="error" @click="LogOut" class="mr-4 mb-2">
                             Salir
-                    </v-btn>-->
+                    </v-btn>
                 </v-col>
             </v-container>
         </div>
