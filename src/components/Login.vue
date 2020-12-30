@@ -146,25 +146,26 @@ export default {
             this.msg = false;
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
-            window.location.href = '/';
+            window.location.href = '/adminView';
         //Login Volunteer
         }else if(this.idRol === 1){
-          localStorage.setItem('logged', true)
-          localStorage.setItem('idRol',this.idRol)
           this.logged = true;
+          localStorage.setItem('logged', this.logged)
+          localStorage.setItem('idRol',this.idRol)
+          
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = false; 
-          window.location.href = '/';
+          window.location.href = '/adminView';
         //Login Admin
         }else if(this.idRol === 0){
-          localStorage.setItem('logged', true)
-          localStorage.setItem('idRol',this.idRol)
           this.logged = true;
+          localStorage.setItem('logged', this.logged)
+          localStorage.setItem('idRol',this.idRol)
           this.msg = false;
           this.$emit('logged', this.logged);
-          this.show = false;
-          window.location.href = '/adminView';
+          this.show = true;
+          //window.location.href = '/adminView';
 
         }
       })

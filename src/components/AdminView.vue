@@ -3,7 +3,7 @@
             <img src="../../src/assets/placeholder.svg" alt="" width="100px">
             <v-col md="5">
                 <v-container class="d-flex align-center h-100">
-                    <h1>Bienvenido al Sistema de Emergencias</h1>
+                    <h1>Bienvenido al Sistema de Admin</h1>
                 </v-container>
             </v-col>
             <v-col class="d-flex flex-column flex-nowrap" md="4">
