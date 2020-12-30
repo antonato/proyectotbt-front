@@ -5,7 +5,10 @@
             <div>
                 <v-tabs  v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
                     <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-                    <v-icon >mdi-account</v-icon>
+                    <v-tab class="mt-2">
+                        <div class="caption py-1">Editar datos</div>
+                        <v-icon large>mdi-account</v-icon>
+                    </v-tab>
                     <v-tab-item>
                         <v-card class="px-4">
                             <v-card-text>
@@ -93,14 +96,14 @@ export default {
                 axios.put('http://localhost:8081/user/update/'+this.idUser, json)
                 .then((response)=>{
                     console.log(response);
-                    alert("¡Tus datos se han editado correctamente!");
-                    this.$route.push({path: '/volunteerView'});
                     this.dialog = false;
+                    this.$router.push({path: '/volunteerView'});
+                    alert("¡Tus datos se han editado correctamente!");
                 });               
             }
         }, 
         exitDialog() {
-            window.location.href = "/volunteerView";
+            this.$router.push({path: '/volunteerView'});
         }
     },
     async created() {

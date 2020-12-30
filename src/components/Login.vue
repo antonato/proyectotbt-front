@@ -61,43 +61,45 @@
                                   <v-col cols="12">
                                       <v-text-field block v-model="verify" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show2 ? 'text' : 'password'" name="input-10-1" label="Confirm Password" counter @click:append="show2 = !show2"></v-text-field>
                                   </v-col>
-                                  <!-- Mapa georeferanciado-->
-                                  <div style="height: 500px; width: 50%">
-                                    <div style="height: 200px overflow: auto;">
-                                      <p>El punto del voluntario será {{ position.lat }}, {{ position.lng }}</p>
+                                  <div class="d-flex flex-column justify-center w-100">
+                                    <!-- Mapa georeferanciado-->
+                                    <div style="height: 350px; width: 100%">
+                                      <div style="overflow: auto;">
+                                        <p>El punto del voluntario será {{ position.lat }}, {{ position.lng }}</p>
+                                      </div>
+                                      <l-map
+                                        v-if="showMap"
+                                        :zoom="zoom"
+                                        :center="center"
+                                        :options="mapOptions"
+                                        style="height: 80%"
+                                        @update:center="centerUpdate"
+                                        @update:zoom="zoomUpdate"
+                                        >
+                                        <l-tile-layer
+                                            :url="url"
+                                            :attribution="attribution"
+                                        />
+                                        <l-geo-json
+                                        v-if="showMap"
+                                        :geojson="geojson"
+                                        :options="options"
+                                        :options-style="styleFunction"
+                                        />
+                                        <l-marker 
+                                            :visible="true"
+                                            :lat-lng.sync="position"
+                                            :draggable="true"
+                                            :icon="icon" 
+                                        ></l-marker>
+                                      </l-map>
                                     </div>
-                                    <l-map
-                                      v-if="showMap"
-                                      :zoom="zoom"
-                                      :center="center"
-                                      :options="mapOptions"
-                                      style="height: 80%"
-                                      @update:center="centerUpdate"
-                                      @update:zoom="zoomUpdate"
-                                      >
-                                      <l-tile-layer
-                                          :url="url"
-                                          :attribution="attribution"
-                                      />
-                                      <l-geo-json
-                                      v-if="showMap"
-                                      :geojson="geojson"
-                                      :options="options"
-                                      :options-style="styleFunction"
-                                      />
-                                      <l-marker 
-                                          :visible="true"
-                                          :lat-lng.sync="position"
-                                          :draggable="true"
-                                          :icon="icon" 
-                                      ></l-marker>
-                                    </l-map>
+                                    <!-- FIN MAPA-->
+                                    <v-spacer></v-spacer>
+                                    <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
+                                        <v-btn x-large block :disabled="!valid" color="success" @click="registerVolunteer">Register</v-btn>
+                                    </v-col>
                                   </div>
-                                  <!-- FIN MAPA-->
-                                  <v-spacer></v-spacer>
-                                  <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                                      <v-btn x-large block :disabled="!valid" color="success" @click="registerVolunteer">Register</v-btn>
-                                  </v-col>
                               </v-row>
                           </v-form>
                       </v-card-text>
@@ -118,7 +120,6 @@ import { LMap, LTileLayer, LMarker, LPopup, LIconDefault, LGeoJson  } from "vue2
 export default {
   name: 'Login',
   props: {
-    msg: Boolean
   },
   computed: {
     passwordMatch() {
@@ -218,7 +219,8 @@ export default {
       min: v => (v && v.length >= 8) || "Min 8 characters"
       // max: v => (v && v.length <= 8) || "Max 8 characters"
     },
-    logged: 0
+    logged: 0,
+    msg: true
   }),
 
   methods: {
@@ -231,6 +233,7 @@ export default {
           })
           
       .then( response => {
+        console.log(response);
         this.user = response.data;
         this.idRol = this.user.idRol; 
         this.idUser = this.user.id;
@@ -254,7 +257,7 @@ export default {
           this.show = false; 
           this.longitude = this.position.lng;
           this.latitude = this.position.lat;
-          window.location.href = '/volunteerView';
+          this.$router.push({path: '/volunteerView'});
         //Login Admin
         }else if(this.idRol === 0){
           this.logged = true;
@@ -264,8 +267,7 @@ export default {
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = true;
-          window.location.href = '/adminView';
-
+          this.$router.push({path: '/adminView'});
         }
       })
       .catch( e=> console.log(e))
@@ -286,7 +288,7 @@ export default {
         this.logged = true;
         this.msg = false;
         this.$emit('logged', this.logged);
-        window.location.href = '/';
+        this.$router.push({path: '/'});
       })
       .catch( e=> console.log(e))
       }

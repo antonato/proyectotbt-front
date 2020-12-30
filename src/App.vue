@@ -19,7 +19,7 @@
                 <h3 style="margin-bottom: 0;">Sistema de Emergencias</h3>
             </div >
             <v-spacer></v-spacer>
-            <div>
+            <div v-if="idRol == 0">
                 <!-- Colocar if para saber el Rol del usuario para que no se muestre a un voluntario-->
                 <v-btn text to="/registroAdmin">
                   <v-icon left>mdi-pencil</v-icon>
@@ -65,6 +65,9 @@ export default {
       localStorage.removeItem('idUser');
       window.location.href = "/";
     }
+  },
+  created() {
+    this.idRol = localStorage.getItem('idRol');
   }
   
 };
