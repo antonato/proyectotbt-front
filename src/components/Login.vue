@@ -273,6 +273,7 @@ export default {
         this.logged = true;
         this.msg = false;
         this.$emit('logged', this.logged);
+        window.location.href = '/';
       })
       .catch( e=> console.log(e))
       }
