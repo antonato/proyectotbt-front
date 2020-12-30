@@ -113,7 +113,7 @@ export default {
             },
             emergency: null,
             emergencies: [],
-            radius: 1000000,
+            radius: 0,
             volunteers: [],
             zoom: 8,
             center: latLng(-38.719, -72.478),
