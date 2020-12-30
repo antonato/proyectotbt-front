@@ -66,7 +66,6 @@ export default {
     tabs: [
         {name:"Login", icon:"mdi-account"},
         {name:"Register", icon:"mdi-account-outline"}
-
     ],
     valid: true,
     user: "",

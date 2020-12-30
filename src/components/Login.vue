@@ -88,6 +88,7 @@ export default {
   },
     data: () => ({
     dialog: true,
+    idRol: null,
     tab: 0,
     tabs: [
         {name:"Login", icon:"mdi-account"},
@@ -104,6 +105,7 @@ export default {
     verify: "",
     loginPassword: "",
     loginEmail: "",
+
     loginEmailRules: [
       v => !!v || "Required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -132,19 +134,23 @@ export default {
         axios.post('http://localhost:8081/user/logIn/', {
           "name":this.loginEmail,
           "password":this.loginPassword,
-          "invisible":0})
+          "invisible":0,
+          })
+          
       .then( response => {
-        this.user = response.data
+        var rol = response.data.idRol;
+        this.user = response.data;
+        console.log(rol);
         if (response.data === 2){
             this.logeado = false;
           localStorage.removeItem('logeado');
-          this.rol = 0
-          localStorage.removeItem('rol');
+          this.idRol = response.data;
+          localStorage.removeItem('idRol');
           this.$router.push("/");
         }else{
           console.log(response.data)
           localStorage.setItem('logeado', true)
-          localStorage.setItem('rol',response.data)
+          localStorage.setItem('idRol',response.data)
           this.logged = true;
           this.msg = false;
           this.$emit('logeado', this.logged);

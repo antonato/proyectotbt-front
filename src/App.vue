@@ -19,13 +19,13 @@
         <h3 style="margin-bottom: 0;">Sistema de Emergencias</h3>
       </div >
       <v-spacer></v-spacer>
-      <div v-if = 'rol == 0' >
-      <v-btn text to="/registroAdmin">
-      <v-icon left>
-        mdi-pencil
-      </v-icon>
-      Registrar Admin
-    </v-btn>
+      <div v-if = 'idRol === 0' >
+        <v-btn text to="/registroAdmin">
+        <v-icon left>
+          mdi-pencil
+        </v-icon>
+        Registrar Admin
+      </v-btn>
     </div>
       <!-- <div v-if = "logeado">
       <v-btn text @click="logOut">
@@ -49,18 +49,18 @@
 <script>
 
 
-
 export default {
   name: 'App',
   components: {
   },
   data: () => ({
     logeado: localStorage.getItem('logeado'),
-    rol: localStorage.getItem('rol')
+    idRol: localStorage.getItem('idRol')
   }),
   methods: {
     goHome() {
       window.location.href = '/';
+
     },
     logOut(){
       console.log("hola ke ase");
