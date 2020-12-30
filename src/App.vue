@@ -27,13 +27,13 @@
       Registrar Admin
     </v-btn>
     </div>
-      <div v-if = "logeado">
+      <!-- <div v-if = "logeado">
       <v-btn text @click="logOut">
         <v-icon>mdi-heart</v-icon>
         Salir  
       </v-btn> 
-      </div>
-      <div v-else>   
+      </div> -->
+      <div v-if = "!logeado" >   
       <v-btn text to="/login">
         <v-icon>mdi-heart</v-icon>
       Acceder
@@ -47,7 +47,8 @@
 </template>
 
 <script>
-//import axios from 'axios';
+
+
 
 export default {
   name: 'App',
