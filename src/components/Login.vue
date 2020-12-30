@@ -140,7 +140,6 @@ export default {
       .then( response => {
         this.user = response.data;
         this.idRol = this.user.idRol; 
-        console.log(this.idRol);
         //Login fail
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
