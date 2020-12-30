@@ -131,16 +131,16 @@ export default {
   methods: {
     validate() {
       if (this.$refs.loginForm.validate()) {
-        axios.post('http://localhost:8081/user/logIn/', {
-          "name":this.loginEmail,
+        axios.post('http://localhost:8081/user/logIn', {
+          "mail":this.loginEmail,
           "password":this.loginPassword,
           "invisible":0,
           })
           
       .then( response => {
-        var rol = response.data.idRol;
+        
         this.user = response.data;
-        console.log(rol);
+        console.log(this.user);
         if (response.data === 2){
             this.logeado = false;
           localStorage.removeItem('logeado');
