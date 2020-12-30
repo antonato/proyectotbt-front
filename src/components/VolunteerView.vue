@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center h-100 justify-center">
         <div>
             <v-container class="d-flex justify-center align-items-center w-100 h-100 mt-5 p-5">
-                <img src="../../src/assets/placeholder.svg" alt="" width="100px">
+                <img class="rounded-pill" src="../../src/assets/Oscar.jpg" alt="" width="200px" >
                 <v-col md="5">
                     <v-container class="d-flex align-center h-100">
                         <h1>Ingresaste al Sistema de Emergencias como voluntario</h1>
