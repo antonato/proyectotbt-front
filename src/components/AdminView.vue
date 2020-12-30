@@ -1,5 +1,5 @@
 <template>
-    <v-container  v-if="logged === true" class="d-flex justify-center align-items-center w-100 h-100 mt-5 p-5">
+    <v-container class="d-flex justify-center align-items-center w-100 h-100 mt-5 p-5">
             <img src="../../src/assets/placeholder.svg" alt="" width="100px">
             <v-col md="5">
                 <v-container class="d-flex align-center h-100">
@@ -36,15 +36,6 @@
     
     export default {
         name: 'AdminView',
-        data: () => ({
-            logged: localStorage.getItem('logged'),
-            openDialog: false
-        }),
-        methods: {
-            dialogTrue(){
-                this.openDialog = true;
-            }
-        }
     }
 </script>
 

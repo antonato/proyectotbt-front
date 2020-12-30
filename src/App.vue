@@ -33,12 +33,6 @@
         Salir  
       </v-btn> 
       </div> -->
-      <div v-if = "!logged" >   
-      <v-btn text to="/login">
-        <v-icon>mdi-heart</v-icon>
-      Acceder
-      </v-btn> 
-      </div>
     </v-app-bar>
     <v-main>
       <router-view to="/taskList"></router-view>
