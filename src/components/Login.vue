@@ -40,8 +40,7 @@
                                        label="First Name" 
                                        maxlength="20" 
                                        required
-                                       @input="$v.firstName.$touch()"
-                                       @blur="$v.firstName.$touch()"
+                                       
                                        ></v-text-field>
                                   </v-col>
                                   <v-col cols="12" sm="6" md="6">
@@ -59,6 +58,39 @@
                                   <v-col cols="12">
                                       <v-text-field block v-model="verify" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show2 ? 'text' : 'password'" name="input-10-1" label="Confirm Password" counter @click:append="show2 = !show2"></v-text-field>
                                   </v-col>
+                                  <!-- Mapa georeferanciado-->
+                                  <div style="height: 500px; width: 50%">
+                                    <div style="height: 200px overflow: auto;">
+                                      <p>El punto del voluntario será {{ position.lat }}, {{ position.lng }}</p>
+                                    </div>
+                                    <l-map
+                                      v-if="showMap"
+                                      :zoom="zoom"
+                                      :center="center"
+                                      :options="mapOptions"
+                                      style="height: 80%"
+                                      @update:center="centerUpdate"
+                                      @update:zoom="zoomUpdate"
+                                      >
+                                      <l-tile-layer
+                                          :url="url"
+                                          :attribution="attribution"
+                                      />
+                                      <l-geo-json
+                                      v-if="showMap"
+                                      :geojson="geojson"
+                                      :options="options"
+                                      :options-style="styleFunction"
+                                      />
+                                      <l-marker 
+                                          :visible="true"
+                                          :lat-lng.sync="position"
+                                          :draggable="true"
+                                          :icon="icon" 
+                                      ></l-marker>
+                                    </l-map>
+                                  </div>
+                                  <!-- FIN MAPA-->
                                   <v-spacer></v-spacer>
                                   <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
                                       <v-btn x-large block :disabled="!valid" color="success" @click="registerVolunteer">Register</v-btn>
@@ -76,6 +108,10 @@
 
 <script>
 import axios from 'axios';
+import L from 'leaflet';
+import { latLng } from "leaflet";
+import { LMap, LTileLayer, LMarker, LPopup, LIconDefault, LGeoJson  } from "vue2-leaflet";
+
 export default {
   name: 'Login',
   props: {
@@ -84,9 +120,58 @@ export default {
   computed: {
     passwordMatch() {
       return () => this.password === this.verify || "Password must match";
+    },
+    styleFunction() {
+      const fillColor = this.fillColor; // important! need touch fillColor in computed for re-calculate when change fillColor
+      return () => {
+        return {
+        weight: 2,
+        color: "#ECEFF1",
+        opacity: 1,
+        fillColor: fillColor,
+        fillOpacity: 1
+        };
+      };
+    },
+    options() {
+        return {
+        onEachFeature: this.onEachFeatureFunction
+      };
     }
   },
-    data: () => ({
+  data: () => ({
+    //para mapa
+    components: {
+        LMap,
+        LTileLayer,
+        LMarker,
+        LPopup,
+        LIconDefault,
+        LGeoJson
+        },
+    zoom: 8,
+    center: latLng(-38.719, -72.478),
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    url_division : 'https://gist.githubusercontent.com/dfao/a8dc40cd822acd2bdc0c707322599539/raw/01ce0385c5f8164e7f983506a94d17c79b7d0789/division_regional.json',
+    attribution:
+          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    currentZoom: 5,
+    currentCenter: latLng(-38.719, -72.478),
+    showParagraph: false,
+    mapOptions: {
+        zoomSnap: 0.5
+    },
+    showMap: true,
+    position: {lat: -38.719, lng: -72.478},
+    values : [],
+    loading: false,
+    geojson: null,
+    icon: L.icon({
+    iconUrl: require('../../src/assets/placeholder.svg'),
+    iconSize: [32, 37],
+    iconAnchor: [16, 37]
+    }),
+    //para mapa
     dialog: true,
     idRol: null,
     tab: 0,
@@ -156,6 +241,8 @@ export default {
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = false; 
+          this.longitude = this.position.lng;
+          this.latitude = this.position.lat;
           window.location.href = '/volunteerView';
         //Login Admin
         }else if(this.idRol === 0){
@@ -189,7 +276,26 @@ export default {
       })
       .catch( e=> console.log(e))
       }
-    }
+    },
+    async getDataDivision () {
+        this.loading = false;
+        let response = await axios.fetch(this.url_division);
+        const data = await response.json();
+        this.geojson = data;
+        this.loading = false;
+    },
+    zoomUpdate(zoom) {
+      this.currentZoom = zoom;
+    },
+    centerUpdate(center) {
+      this.currentCenter = center;
+    },
+    showLongText() {
+      this.showParagraph = !this.showParagraph;
+    },
+    innerClick() {
+      alert("Click!");
+    },
   }
 }
 </script>
