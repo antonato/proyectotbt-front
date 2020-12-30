@@ -9,7 +9,7 @@
             <v-col class="d-flex flex-column flex-nowrap" md="4">
                     <router-link to="/taskList">
                         <v-btn color="success" class="mr-4 mb-2">
-                            Ver lista de Emergencias
+                            Ver lista de Tareas
                         </v-btn>
                     </router-link>
                     <router-link to="/createEmergency">
@@ -24,7 +24,7 @@
                     </router-link>
                     <router-link to="/searchVolunteer">
                         <v-btn color="success" class="mr-4 mb-2">
-                            Buscar voluntarios alrededor
+                            Buscar voluntarios alrededor de una emergencia
                         </v-btn>
                     </router-link>
             </v-col>
