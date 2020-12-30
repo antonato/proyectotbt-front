@@ -139,14 +139,14 @@ export default {
           
       .then( response => {
         this.user = response.data;
-        console.log(this.user);
+        console.log(this.user.idRol);
         //Login fail
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
             this.msg = false;
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
-            this.$router.push("/");
+            window.location.href = '/';
         //Login Volunteer
         }else if(this.idRol === 1){
           localStorage.setItem('logged', true)
@@ -154,17 +154,17 @@ export default {
           this.logged = true;
           this.msg = false;
           this.$emit('logged', this.logged);
-          this.show = false;
-          this.$router.push("/");
+          this.show = false; 
+          window.location.href = '/';
         //Login Admin
-        }else{
+        }else if(this.idRol === 0){
           localStorage.setItem('logged', true)
           localStorage.setItem('idRol',this.idRol)
           this.logged = true;
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = false;
-          this.$router.push("/adminView");
+          window.location.href = '/adminView';
 
         }
       })

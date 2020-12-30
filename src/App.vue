@@ -33,7 +33,7 @@
         Salir  
       </v-btn> 
       </div> -->
-      <div v-if = "!logeado" >   
+      <div v-if = "!logged" >   
       <v-btn text to="/login">
         <v-icon>mdi-heart</v-icon>
       Acceder

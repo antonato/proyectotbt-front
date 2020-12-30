@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex align-items-center h-100 justify-center">
         <div>
-            <Login :msg="openDialog" v-on:logeado="logged = $event"></Login>
+            <Login :msg="openDialog" v-on:logged="logged = $event"></Login>
             <v-container  v-if="logged === false" class="d-flex justify-center align-items-center w-100 h-100 mt-5 p-5">
                 <img src="../../src/assets/placeholder.svg" alt="" width="100px">
                 <v-col md="5">
