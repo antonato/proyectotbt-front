@@ -120,6 +120,7 @@ import { LMap, LTileLayer, LMarker, LPopup, LIconDefault, LGeoJson  } from "vue2
 export default {
   name: 'Login',
   props: {
+    msg: Boolean
   },
   computed: {
     passwordMatch() {
@@ -176,7 +177,7 @@ export default {
     iconAnchor: [16, 37]
     }),
     //para mapa
-    dialog: true,
+    dialog: false,
     idRol: null,
     idUser: -1,
     tab: 0,
@@ -220,7 +221,6 @@ export default {
       // max: v => (v && v.length <= 8) || "Max 8 characters"
     },
     logged: 0,
-    msg: true
   }),
 
   methods: {
@@ -237,23 +237,22 @@ export default {
         this.user = response.data;
         this.idRol = this.user.idRol; 
         this.idUser = this.user.id;
-        console.log(this.idUser);
         //Login fail
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
-            this.msg = false;
+            this.$emit('msg', false);
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
             localStorage.removeItem('idUser');
-            window.location.href = '/';
+            this.$router.push({path: '/'});
         //Login Volunteer
         }else if(this.idRol === 1){
           this.logged = true;
           localStorage.setItem('logged', this.logged);
           localStorage.setItem('idRol',this.idRol);
           localStorage.setItem('idUser',this.idUser);
-          this.msg = false;
           this.$emit('logged', this.logged);
+          this.$emit('msg', false);
           this.show = false; 
           this.longitude = this.position.lng;
           this.latitude = this.position.lat;
@@ -263,9 +262,9 @@ export default {
           this.logged = true;
           localStorage.setItem('logged', this.logged);
           localStorage.setItem('idRol',this.idRol);
-          localStorage.setItem('idUser',this.idUser);
-          this.msg = false;
+          localStorage.setItem('idUser',this.idUser);        
           this.$emit('logged', this.logged);
+          this.$emit('msg', false);
           this.show = true;
           this.$router.push({path: '/adminView'});
         }
@@ -286,7 +285,7 @@ export default {
       .then( response => {
         this.user = response.data;
         this.logged = true;
-        this.msg = false;
+        this.$emit('msg', false);
         this.$emit('logged', this.logged);
         this.$router.push({path: '/'});
       })
@@ -312,6 +311,6 @@ export default {
     innerClick() {
       alert("Click!");
     },
-  }
+  },
 }
 </script>

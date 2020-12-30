@@ -6,27 +6,19 @@
                     <h1>Bienvenido al Sistema de Admin</h1>
                 </v-container>
             </v-col>
-            <v-col class="d-flex flex-column flex-nowrap" md="4">
-                    <router-link to="/taskList">
-                        <v-btn color="success" class="mr-4 mb-2">
+            <v-col class="d-flex flex-column flex-fill" md="4">
+                        <v-btn :to="{path: '/taskList'}" color="success" class="mr-4 mb-2">
                             Ver lista de Tareas
                         </v-btn>
-                    </router-link>
-                    <router-link to="/createEmergency">
-                        <v-btn color="success" class="mr-4 mb-2">
+                        <v-btn :to="{path: '/createEmergency'}" color="success" class="mr-4 mb-2">
                             Crear Emergencia
                         </v-btn>
-                    </router-link>
-                    <router-link to="/createTask">
-                        <v-btn color="success" class="mr-4 mb-2">
+                        <v-btn :to="{path: '/createTask'}" color="success" class="mr-4 mb-2">
                             Crear Tarea
                         </v-btn>
-                    </router-link>
-                    <router-link to="/searchVolunteer">
-                        <v-btn color="success" class="mr-4 mb-2">
+                        <v-btn :to="{path: '/searchVolunteer'}" color="success" class="mr-4 mb-2">
                             Buscar voluntarios alrededor de una emergencia
                         </v-btn>
-                    </router-link>
             </v-col>
         </v-container>
 </template>

@@ -34,8 +34,20 @@
         methods: {
             dialogTrue(){
                 this.openDialog = true;
+                console.log(this.openDialog);
+            }
+        },
+        created() {
+            const rol =  localStorage.getItem('idRol');
+            if ( rol == null) {
+                console.log ('¡Bienvenido al Sistema de Emergencias!')
+            } else if ( rol == 0) {
+                this.$router.push({path: '/adminView'});
+            } else if ( rol == 1) {
+                this.$router.push({path: '/volunteerView'});
             }
         }
+
     }
 </script>
 
