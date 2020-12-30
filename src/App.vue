@@ -54,7 +54,7 @@ export default {
   components: {
   },
   data: () => ({
-    logeado: localStorage.getItem('logeado'),
+    logged: localStorage.getItem('logged'),
     idRol: localStorage.getItem('idRol')
   }),
   methods: {
@@ -66,8 +66,8 @@ export default {
       console.log("hola ke ase");
       //axios.post('http://localhost:8081/user/logOut/')
       //.then (()=>{
-        this.logeado = false;
-        localStorage.removeItem('logeado');
+        this.logged = false;
+        localStorage.removeItem('logged');
         this.rol = 0
         localStorage.removeItem('rol');
         location.reload();

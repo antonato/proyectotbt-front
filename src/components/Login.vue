@@ -144,25 +144,25 @@ export default {
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
             this.msg = false;
-            localStorage.removeItem('logeado');
+            localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
             this.$router.push("/");
         //Login Volunteer
         }else if(this.idRol === 1){
-          localStorage.setItem('logeado', true)
+          localStorage.setItem('logged', true)
           localStorage.setItem('idRol',this.idRol)
           this.logged = true;
           this.msg = false;
-          this.$emit('logeado', this.logged);
+          this.$emit('logged', this.logged);
           this.show = false;
           this.$router.push("/");
         //Login Admin
         }else{
-          localStorage.setItem('logeado', true)
+          localStorage.setItem('logged', true)
           localStorage.setItem('idRol',this.idRol)
           this.logged = true;
           this.msg = false;
-          this.$emit('logeado', this.logged);
+          this.$emit('logged', this.logged);
           this.show = false;
           this.$router.push("/adminView");
 
@@ -184,7 +184,7 @@ export default {
         this.user = response.data;
         this.logged = true;
         this.msg = false;
-        this.$emit('logeado', this.logged);
+        this.$emit('logged', this.logged);
       })
       .catch( e=> console.log(e))
       }

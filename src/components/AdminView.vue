@@ -37,7 +37,7 @@
     export default {
         name: 'AdminView',
         data: () => ({
-            logged: false,
+            logged: localStorage.getItem('logged'),
             openDialog: false
         }),
         methods: {
