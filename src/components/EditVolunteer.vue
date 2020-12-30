@@ -71,6 +71,7 @@ export default {
         lastName: "",
         email: "",
         password: "",
+        name:"",
         verify: "",
         phoneNumber: "",
         show1: false,
@@ -85,15 +86,10 @@ export default {
     methods: {
         editVolunteer(){
             if(this.firstName != "" && this.lastName != ""){
-                let json = {
-                    "name" : this.firstName + ' '+ this.lastName,
-                    "mail" : this.email,
-                    "phone" : this.phoneNumber,
-                    "password" : this.password,
-                    "idrol" : this.user.idRol,
-                    "loginToken" : 1,
-                }
-                axios.put('http://localhost:8081/user/update/'+this.idUser, json)
+                this.name = this.firstName + ' '+ this.lastName,
+                
+                axios.put('http://localhost:8081/user/update/'+this.idUser+'?name='+this.name+'&mail='+this.email+'&phone='+this.phoneNumber+'&password='+this.password)
+                
                 .then((response)=>{
                     console.log(response);
                     this.dialog = false;
