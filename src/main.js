@@ -3,7 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import VueAxios from 'vue-axios';
 import Axios from 'axios';
-import routes from './router/';
+import routes from './router/index';
 import VueRouter from 'vue-router'
 import { LMap, LTileLayer, LMarker, LTooltip, LGeoJson, LCircle } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -12,7 +12,7 @@ import { Icon }  from 'leaflet';
 Vue.config.productionTip = false
 Vue.use(vuetify);
 Vue.use(VueAxios, Axios);
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 Vue.component('l-map', LMap);
 Vue.component('l-tooltip', LTooltip);
 Vue.component('l-tile-layer', LTileLayer);
@@ -30,9 +30,9 @@ Icon.Default.mergeOptions({
 });
 
 const router = new VueRouter({
-  base: 'public', 
-  mode: 'history',
-  routes
+  routes: routes,
+  mode: "history",
+  base: "public"
 })
 
 new Vue({
