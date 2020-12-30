@@ -49,6 +49,9 @@
                                   <v-col cols="12" sm="6" md="6">
                                       <v-text-field v-model="phoneNumber" :rules="phoneRules" label="Phone" maxlength="9" type="number" required></v-text-field>
                                   </v-col>
+                                  <v-col cols="12" sm="6" md="6">
+                                            <v-text-field v-model="VolunteerID" :rules="VolunteerIDRules" label="VolunteerID" maxlength="9" type="number" required></v-text-field>
+                                        </v-col>
                                   <v-col cols="12">
                                       <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
                                   </v-col>
@@ -188,6 +191,7 @@ export default {
     phoneNumber: null,
     password: "",
     verify: "",
+    VolunteerID:"",
     loginPassword: "",
     loginEmail: "",
 
@@ -201,6 +205,9 @@ export default {
     ],
     phoneRules: [
       v => !!v || "Required",
+    ],
+    VolunteerIDRules: [
+      v => !!v || "Required"
     ],
     show: true,
     show1: false,
@@ -264,8 +271,9 @@ export default {
         axios.post('http://localhost:8081/user/createUser/', 
         {"name":this.firstName+" "+this.lastName,
           "mail":this.email,
-          "phone":12345,
+          "phone":this.phone,
           "idRol":1,
+          "idVol":this.VolunteerID,
           "password":this.password,
           "invisible":0})
       .then( response => {
