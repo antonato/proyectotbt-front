@@ -5,16 +5,16 @@
                 <img class="rounded-pill" src="../../src/assets/Oscar.jpg" alt="" width="200px" >
                 <v-col md="5">
                     <v-container class="d-flex align-center h-100">
-                        <h1>Ingresaste al Sistema de Emergencias como voluntario</h1>
+                        <h1>Ingresaste al Sistema de Emergencias como Voluntario</h1>
                     </v-container>
                 </v-col>
                 <v-col class="d-flex flex-column flex-nowrap" md="4">
                     <router-link to="/editVolunteer">
-                    <v-btn color="success" class="mr-4 mb-2">
-                            Editar Información
-                    </v-btn>
+                        <v-btn color="success" class="mr-4 mb-2 w-50">
+                                Editar Información
+                        </v-btn>
                     </router-link>
-                    <v-btn color="error" @click="LogOut" class="mr-4 mb-2">
+                    <v-btn color="error" @click="LogOut" class="w-50 mr-4 mb-2">
                             Salir
                     </v-btn>
                 </v-col>

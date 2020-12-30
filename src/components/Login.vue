@@ -233,12 +233,15 @@ export default {
       .then( response => {
         this.user = response.data;
         this.idRol = this.user.idRol; 
+        this.idUser = this.user.id;
+        console.log(this.idUser);
         //Login fail
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
             this.msg = false;
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
+            localStorage.removeItem('idUser');
             window.location.href = '/';
         //Login Volunteer
         }else if(this.idRol === 1){
@@ -255,8 +258,9 @@ export default {
         //Login Admin
         }else if(this.idRol === 0){
           this.logged = true;
-          localStorage.setItem('logged', this.logged)
-          localStorage.setItem('idRol',this.idRol)
+          localStorage.setItem('logged', this.logged);
+          localStorage.setItem('idRol',this.idRol);
+          localStorage.setItem('idUser',this.idUser);
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = true;

@@ -70,7 +70,6 @@ export default {
         password: "",
         verify: "",
         phoneNumber: "",
-        idUser: -1,
         show1: false,
         show2: false,
         rules: {
@@ -81,56 +80,56 @@ export default {
     }),
     methods: {
         editVolunteer(){
-            localStorage.setItem('idUser', this.idUser);
-            axios.get('http://localhost:8081/user/getById/'+this.idUser)
+            var idUser = localStorage.getItem('idUser');
+            axios.get('http://localhost:8081/user/getById/'+idUser)
                  .then(response => (this.user = response.data))
             if(this.firstName != "" && this.lastName != ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "name":this.firstName+" "+this.lastName 
                 })
             }
             else if(this.firstName != "" && this.lastName == ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "name":this.firstName + this.user.lastName
                 })
             }
             else if(this.firstName == "" && this.lastName == ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "name":this.user.firstName + this.user.lastName
                 })
             }
             else if(this.firstName == "" && this.lastName != ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "name":this.user.firstName + this.lastName
                 })
             }
             if(this.email == ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "email":this.user.email
                 })
             }
             else{
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "email":this.email
                 })
             }
             if(this.phoneNumber == ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "phone":this.user.phoneNumber
                 })
             }
             else{
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "phone":this.phoneNumber
                 })
             }
             if(this.password == ""){
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "password":this.user.password
                 })
             }
             else{
-                axios.put('http://localhost:8081/user/getById/'+this.idUser, {
+                axios.put('http://localhost:8081/user/getById/'+idUser, {
                     "password":this.password
                 })
             }
