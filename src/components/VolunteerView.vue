@@ -9,9 +9,9 @@
                     </v-container>
                 </v-col>
                 <v-col class="d-flex flex-column flex-nowrap" md="4">
-                    <v-btn color="error" @click="LogOut" class="mr-4 mb-2">
+                    <!--<v-btn color="error" @click="LogOut" class="mr-4 mb-2">
                             Salir
-                    </v-btn>
+                    </v-btn>-->
                 </v-col>
             </v-container>
         </div>
@@ -23,7 +23,6 @@ export default {
     name: 'VolunteerView',
     methods: {
         LogOut(){
-            this.logged = false;
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
             window.location.href = "/";

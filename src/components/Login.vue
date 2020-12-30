@@ -139,7 +139,8 @@ export default {
           
       .then( response => {
         this.user = response.data;
-        console.log(this.user.idRol);
+        this.idRol = this.user.idRol; 
+        console.log(this.idRol);
         //Login fail
         if (this.idRol === 2 || this.idRol === null){
             this.logged = false;
@@ -150,8 +151,8 @@ export default {
         //Login Volunteer
         }else if(this.idRol === 1){
           this.logged = true;
-          localStorage.setItem('logged', this.logged)
-          localStorage.setItem('idRol',this.idRol)
+          localStorage.setItem('logged', this.logged);
+          localStorage.setItem('idRol',this.idRol);
           
           this.msg = false;
           this.$emit('logged', this.logged);
