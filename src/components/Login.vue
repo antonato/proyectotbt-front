@@ -146,7 +146,7 @@ export default {
             this.msg = false;
             localStorage.removeItem('logged');
             localStorage.removeItem('idRol');
-            window.location.href = '/adminView';
+            window.location.href = '/';
         //Login Volunteer
         }else if(this.idRol === 1){
           this.logged = true;
@@ -156,7 +156,7 @@ export default {
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = false; 
-          window.location.href = '/adminView';
+          window.location.href = '/volunteerView';
         //Login Admin
         }else if(this.idRol === 0){
           this.logged = true;
@@ -165,7 +165,7 @@ export default {
           this.msg = false;
           this.$emit('logged', this.logged);
           this.show = true;
-          //window.location.href = '/adminView';
+          window.location.href = '/adminView';
 
         }
       })
