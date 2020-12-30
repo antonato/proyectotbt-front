@@ -45,7 +45,7 @@
             >
             <l-circle
             :lat-lng="center"
-            :radius="radius/1000"
+            :radius="radius"
             :color="circle.color"
             />
             <l-tile-layer
