@@ -11,7 +11,7 @@
                 </v-col>
                 <v-col class="d-flex flex-column flex-nowrap" md="4">
                             <v-btn color="success" @click="dialogTrue()" class="mr-4 mb-2">
-                                    Inicia Sesión
+                                    Ingresar
                             </v-btn>
                 </v-col>
             </v-container>

@@ -1,14 +1,14 @@
 <template>
-  <v-dialog persistent v-model="msg" max-width="600px" min-width="360px">
+  <v-dialog v-if="show" persistent v-model="msg" max-width="600px" min-width="360px">
       <div>
           <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
               <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-              <v-tab v-for="tab in tabs" :key="'Login'+ tab">
+              <v-tab v-for="(tab, i) in tabs" :key="i">
                   <v-icon large>{{ tab.icon }}</v-icon>
                   <div class="caption py-1">{{ tab.name }}</div>
               </v-tab>
               <v-tab-item>
-                  <v-card class="px-4">
+                  <v-card class="px-4" v-if = "show">
                       <v-card-text>
                           <v-form ref="loginForm" v-model="valid" lazy-validation>
                               <v-row>
@@ -57,11 +57,11 @@
                                       <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" counter @click:append="show1 = !show1"></v-text-field>
                                   </v-col>
                                   <v-col cols="12">
-                                      <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Confirm Password" counter @click:append="show1 = !show1"></v-text-field>
+                                      <v-text-field block v-model="verify" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Confirm Password" counter @click:append="show1 = !show1"></v-text-field>
                                   </v-col>
                                   <v-spacer></v-spacer>
                                   <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                                      <v-btn x-large block :disabled="!valid" color="success" @click="registerAdmin">Register</v-btn>
+                                      <v-btn x-large block :disabled="!valid" color="success" @click="registerVolunteer">Register</v-btn>
                                   </v-col>
                               </v-row>
                           </v-form>
@@ -115,8 +115,9 @@ export default {
     phoneRules: [
       v => !!v || "Required",
     ],
-
+    show: true,
     show1: false,
+    show2: false,
     rules: {
       required: value => !!value || "Required.",
       min: v => (v && v.length >= 8) || "Min 8 characters"
@@ -147,20 +148,21 @@ export default {
           this.logged = true;
           this.msg = false;
           this.$emit('logeado', this.logged);
+          this.show = false;
         }
       })
       .catch( e=> console.log(e))
       }
-    },
-    registerAdmin(){
-        if (this.$refs.registerForm.validate()) {
+    }, 
+    registerVolunteer(){
+      if (this.$refs.registerForm.validate()) {
         axios.post('http://localhost:8081/user/createUser/', 
         {"name":this.firstName+" "+this.lastName,
-         "mail":this.email,
-         "phone":12345,
-         "idRol":1,
-         "password":this.password,
-         "invisible":0})
+          "mail":this.email,
+          "phone":12345,
+          "idRol":1,
+          "password":this.password,
+          "invisible":0})
       .then( response => {
         this.user = response.data;
         this.logged = true;
@@ -169,12 +171,6 @@ export default {
       })
       .catch( e=> console.log(e))
       }
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
     }
   }
 }

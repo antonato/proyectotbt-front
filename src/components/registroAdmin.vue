@@ -30,7 +30,7 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="register">Register</v-btn>
+                                            <v-btn x-large block :disabled="!valid" color="success" @click="registerAdmin">Registrarse</v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-form>
@@ -86,24 +86,32 @@ export default {
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
     ],
     phoneRules: [
-      v => !!v || "Required",
+      v => !!v || "Required"
     ],
 
     show1: false,
     rules: {
       required: value => !!value || "Required.",
       //min: v => (v && v.length >= 8) || "Min 8 characters"
-      max: v => (v && v.length <= 8) || "Max 8 characters"
+      max: v => (v && v.length <= 8) || "Máximo 8 caracteres"
     }
   }),
 
   methods: {
-    register(){
+    registerAdmin(){
         if (this.$refs.registerForm.validate()) {
-        axios.post('http://localhost:8081/user/createUser/', {"name":this.firstName+" "+this.lastName, "mail":this.email,"phone":12345,"idRol":2,"password":this.password,"invisible":0})
-      .then(() =>  {
-        alert("Administrador Registrado Correctamente");
-        this.$router.push("/")
+        axios.post('http://localhost:8081/user/createUser/', 
+        {"name":this.firstName+" "+this.lastName,
+         "mail":this.email,
+         "phone":12345,
+         "idRol":0,
+         "password":this.password,
+         "invisible":0})
+      .then( response => {
+        this.user = response.data;
+        this.logged = true;
+        this.msg = false;
+        this.$emit('logeado', this.logged);
       })
       .catch( e=> console.log(e))
       }
