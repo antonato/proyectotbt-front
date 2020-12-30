@@ -76,69 +76,44 @@ export default {
             required: value => !!value ,
             //min: v => (v && v.length >= 8) || "Min 8 characters"
             min: v => (v && v.length >= 8) || "Mínimo 8 caracteres"
-        }
+        },
+        idUser : null
     }),
     methods: {
         editVolunteer(){
-            var idUser = localStorage.getItem('idUser');
-            axios.get('http://localhost:8081/user/getById/'+idUser)
-                 .then(response => (this.user = response.data))
             if(this.firstName != "" && this.lastName != ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "name":this.firstName+" "+this.lastName 
-                })
+                let json = {
+                    "name" : this.firstName + ' '+ this.lastName,
+                    "mail" : this.email,
+                    "phone" : this.phoneNumber,
+                    "password" : this.password,
+                    "idrol" : this.user.idRol,
+                    "loginToken" : 1,
+                }
+                axios.put('http://localhost:8081/user/update/'+this.idUser, json)
+                .then((response)=>{
+                    console.log(response);
+                    alert("¡Tus datos se han editado correctamente!");
+                    this.$route.push({path: '/volunteerView'});
+                    this.dialog = false;
+                });               
             }
-            else if(this.firstName != "" && this.lastName == ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "name":this.firstName + this.user.lastName
-                })
-            }
-            else if(this.firstName == "" && this.lastName == ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "name":this.user.firstName + this.user.lastName
-                })
-            }
-            else if(this.firstName == "" && this.lastName != ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "name":this.user.firstName + this.lastName
-                })
-            }
-            if(this.email == ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "email":this.user.email
-                })
-            }
-            else{
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "email":this.email
-                })
-            }
-            if(this.phoneNumber == ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "phone":this.user.phoneNumber
-                })
-            }
-            else{
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "phone":this.phoneNumber
-                })
-            }
-            if(this.password == ""){
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "password":this.user.password
-                })
-            }
-            else{
-                axios.put('http://localhost:8081/user/getById/'+idUser, {
-                    "password":this.password
-                })
-            }
-                
         }, 
         exitDialog() {
             window.location.href = "/volunteerView";
         }
+    },
+    async created() {
+            this.idUser = localStorage.getItem('idUser');
+            await axios.get('http://localhost:8081/user/getById/'+this.idUser)
+                 .then(response => (this.user = response.data));
+            this.firstName = this.user.name;
+            this.lastName = this.user.lastName;
+            this.email = this.user.mail;
+            this.phoneNumber = this.user.phone;
+            console.log(this.user);
     }
+    
 
 }
 </script>
