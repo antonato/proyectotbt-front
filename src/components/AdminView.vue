@@ -24,7 +24,7 @@
                     </router-link>
                     <router-link to="/searchVolunteer">
                         <v-btn color="success" class="mr-4 mb-2">
-                            Buscar voluntarios por tarea
+                            Buscar voluntarios alrededor
                         </v-btn>
                     </router-link>
             </v-col>
